@@ -87,5 +87,6 @@ $(function() {
 
     SHEN_newline();
     SHEN_fn(shen_credits);
+    SHEN_fn(shen_initialise$_environment);
     SHEN_set_history_pos(SHEN_history.length);
 });
