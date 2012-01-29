@@ -77,7 +77,7 @@ $(function () {
         };
     }());
 
-    var twipsy_opts = {placement: "left", offset: 16, delayIn: 1000};
+    var twipsy_opts = {placement: "left", offset: 16, delayIn: 1500};
 
     SHEN.error = (function () {
         return {
@@ -87,14 +87,15 @@ $(function () {
 
             add: function (e) {
                 var error = $('<div class="alert-message block-message error" title="Click to toggle stacktrace">')
-                    .text(e.toString())
+                    .html('<span class="message">' + e.toString())
                     .twipsy(twipsy_opts)
                     .click(function () {
                         $(this).find(".stack").toggle();
+                        $(this).twipsy("hide");
                     })
                     .appendTo("#stdout");
 
-                $("<p class='stack'>")
+                $('<p class="stack">')
                     .text(e.stack.substring(e.stack.indexOf("\n") + 1))
                     .appendTo(error);
             }
@@ -146,7 +147,7 @@ $(function () {
         SHEN.history.last();
     });
 
-    $("#repl #prompt").twipsy({placement: "left", delayIn: 1000});
+    $("#repl #prompt").twipsy({placement: "left", delayIn: 1500});
 
     SHEN.io.newline();
     SHEN.fn(shen_credits);
