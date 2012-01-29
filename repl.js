@@ -4,6 +4,7 @@ $(function() {
     var SHEN_set_history_pos = function(pos) {
         SHEN_history_pos = pos;
         $("label[for=stdin]").text("(" + pos + "-)");
+        $("#stdin").val(SHEN_history[SHEN_history_pos]);
     }
 
     SHEN_write = function(c) {
@@ -35,6 +36,7 @@ $(function() {
     var SHEN_eval = function (code) {
         SHEN_history.push(code);
         SHEN_set_history_pos(SHEN_history.length);
+        SHEN_write('<div class="code">' + code + '</div>');
         SHEN_fn(shen_read_evaluate_print);
         SHEN_write('<p>');
     }
@@ -62,12 +64,14 @@ $(function() {
             }
             if (e.keyCode == arrow.up && SHEN_history_pos > 0) {
                 SHEN_set_history_pos(SHEN_history_pos - 1);
-                $("#stdin").val(SHEN_history[SHEN_history_pos]);
             }
             if (e.keyCode == arrow.down && SHEN_history_pos < SHEN_history.length) {
                 SHEN_set_history_pos(SHEN_history_pos + 1);
-                $("#stdin").val(SHEN_history[SHEN_history_pos]);
             }
         }
+    });
+
+    $("#stdout").on("click", ".code", function(e) {
+        SHEN_set_history_pos($("#stdout .code").index($(this)));
     });
 });

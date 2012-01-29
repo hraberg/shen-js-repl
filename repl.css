@@ -3,6 +3,13 @@
     font-weight: bold;
 }
 
+#repl #stdout {
+}
+
+.code {
+    font-weight: bold;    
+}
+
 #repl label {
     font-family: Monaco, Andale Mono, Courier New, monospace;
     font-weight: bold;
