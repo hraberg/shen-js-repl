@@ -50,6 +50,7 @@ $(function() {
     }
 
     var arrow = {left: 37, up: 38, right: 39, down: 40 };
+    var enter = 13;
 
     SHEN_fn(shen_credits);
     SHEN_write('<p>');
@@ -57,10 +58,8 @@ $(function() {
 
     $("#stdin").keyup(function(e) {
         if (e.ctrlKey) {
-            if (e.keyCode == 13 && $.trim(this.value).length > 0) {
-                var line = this.value;
-                this.value = "";
-                SHEN_eval(line);
+            if (e.keyCode == enter && $.trim(this.value).length > 0) {
+                SHEN_eval(this.value);
             }
             if (e.keyCode == arrow.up && SHEN_history_pos > 0) {
                 SHEN_set_history_pos(SHEN_history_pos - 1);
