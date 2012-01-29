@@ -1,61 +1,89 @@
 $(function() {
     SHEN = {};
-    SHEN.io = {
-        write: function(c) {
-            SHEN_out_buffer += c;
-            if (c == '\n') SHEN_flush();
-        },
+    SHEN.io = (function() {
+        var out_buffer = "";
 
-        // For file:// to work in Chrome google-chrome --allow-file-access-from-files
-        read: function(fn) {
-            var data;
-            $.ajax({
-                type: "GET",
-                url: fn,
-                async: false,
-                dataType:"text",
-                success: function(response) {
-                    data = response;
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    throw (errorThrown || textStatus);
-                }
-            });
-            return data;
-        },
+        return {
+            newline: function() {
+                $("#stdout").append('<div class="line">');
+            },
 
-        readline: function() {
-            return SHEN_history[SHEN_history.length - 1];
+            flush: function() {
+                $("#stdout .line:last").append(out_buffer);
+                out_buffer = "";
+            },
+
+            write: function(c) {
+                out_buffer += c;
+                if (c == '\n') this.flush();
+            },
+
+            // For file:// to work in Chrome google-chrome --allow-file-access-from-files
+            read: function(fn) {
+                var data;
+                $.ajax({
+                    type: "GET",
+                    url: fn,
+                    async: false,
+                    dataType:"text",
+                    success: function(response) {
+                        data = response;
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        throw (errorThrown || textStatus);
+                    }
+                });
+                return data;
+            },
+
+            readline: function() {
+                return SHEN.history.current();
+            }
         }
-    };
-    
-    var SHEN_history = [];
-    var SHEN_history_pos = 0;
-    var SHEN_set_history_pos = function(pos) {
-        SHEN_history_pos = pos;
-        $("label[for=stdin]").text("(" + pos + "-)");
-        $("#stdin").val(SHEN_history[SHEN_history_pos]);
-    }
+    })();
 
-    var SHEN_out_buffer = "";
+    SHEN.history = (function() {
+        var history = [];
+        var pos = 0;
 
-    var SHEN_newline = function() {
-        $("#stdout").append('<div class="line">');
-    }
-    var SHEN_flush = function() {
-        $("#stdout .line:last").append(SHEN_out_buffer);
-        SHEN_out_buffer = "";
-    }
+        return {
+            go:  function(to) {
+                pos = to;
+                $("label[for=stdin]").text("(" + pos + "-)");
+                $("#stdin").val(history[pos]);
+            },
 
-    var SHEN_eval = function (code) {
-        SHEN_history.push(code);
-        SHEN_set_history_pos(SHEN_history.length);
+            add: function(code) {
+                history.push(code);
+                this.go(history.length)
+            },
+
+            forward: function() {
+                if (pos < history.length) this.go(pos + 1);
+            },
+
+            back: function() {
+                if (pos > 0) this.go(pos - 1);
+            },
+
+            last: function() {
+                this.go(history.length);
+            },
+
+            current: function() {
+                return history[history.length - 1];
+            }
+        }
+    })();
+
+    SHEN.eval = function (code) {
+        SHEN.history.add(code);
         $("#stdout").append('<div class="code">' + code + '</div>');
-        SHEN_newline();
-        SHEN_fn(shen_read_evaluate_print);
-        SHEN_flush();
+        SHEN.io.newline();
+        SHEN.fn(shen_read_evaluate_print);
+        SHEN.io.flush();
     }
-    var SHEN_fn = function (f) {
+    SHEN.fn = function (f) {
         try {
             return shen_tail_call(shen_get_fn_js(f));
         } catch (e) {
@@ -63,8 +91,8 @@ $(function() {
             return e;
         }
     }
-    var SHEN_eval_stdin = function() {
-        SHEN_eval($("#stdin").val().trim());
+    SHEN.eval_stdin = function() {
+        SHEN.eval($("#stdin").val().trim());
     }
 
     var arrow = {left: 37, up: 38, right: 39, down: 40 };
@@ -73,31 +101,27 @@ $(function() {
     $("#stdin").keyup(function(e) {
         if (e.ctrlKey) {
             if (e.keyCode == enter && $.trim(this.value).length > 0) {
-                SHEN_eval_stdin();
+                SHEN.eval_stdin();
             }
-            if (e.keyCode == arrow.up && SHEN_history_pos > 0) {
-                SHEN_set_history_pos(SHEN_history_pos - 1);
-            }
-            if (e.keyCode == arrow.down && SHEN_history_pos < SHEN_history.length) {
-                SHEN_set_history_pos(SHEN_history_pos + 1);
-            }
+            if (e.keyCode == arrow.up) SHEN.history.back();
+            if (e.keyCode == arrow.down) SHEN.history.forward();
         }
     });
 
     $("#stdout").on("click", ".code", function(e) {
-        SHEN_set_history_pos($("#stdout .code").index($(this)));
+        SHEN.history.go($("#stdout .code").index($(this)));
     });
     $("#stdout").on("dblclick", ".code", function(e) {
-        SHEN_set_history_pos($("#stdout .code").index($(this)));
-        SHEN_eval_stdin();
+        SHEN.history.go($("#stdout .code").index($(this)));
+        SHEN.eval_stdin();
     });
     $("#prompt").click(function(e) {
-        SHEN_set_history_pos(SHEN_history.length);
+        SHEN.history.last();
     });
 
 
-    SHEN_newline();
-    SHEN_fn(shen_credits);
-    SHEN_fn(shen_initialise$_environment);
-    SHEN_set_history_pos(SHEN_history.length);
+    SHEN.io.newline();
+    SHEN.fn(shen_credits);
+    SHEN.fn(shen_initialise$_environment);
+    SHEN.history.last();
 });
