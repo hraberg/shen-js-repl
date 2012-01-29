@@ -77,9 +77,31 @@ $(function () {
         };
     }());
 
+    SHEN.error = (function () {
+        return {
+            hide_last: function () {
+                $("#stdout div:last .stack").hide();
+            },
+
+            add: function (e) {
+                var error = $('<div title="Click to toggle Stacktrace" class="alert-message block-message error">')
+                    .text(e.toString())
+                    .click(function () {
+                        $(this).find(".stack").toggle();
+                    })
+                    .appendTo($("#stdout"));
+
+                $("<p class='stack'>")
+                    .text(e.stack.substring(e.stack.indexOf("\n") + 1))
+                    .appendTo(error);
+            }
+        };
+    }());
+
     SHEN.eval = function (code) {
         SHEN.history.add(code);
-        $('<div class="code">' + code + '</div>')
+        SHEN.error.hide_last();
+        $('<div class="code" title="Click to recall, Double click to reevaluate">' + code + '</div>')
             .appendTo("#stdout");
         SHEN.io.newline();
         SHEN.fn(shen_read_evaluate_print);
@@ -89,8 +111,7 @@ $(function () {
         try {
             return shen_tail_call(shen_get_fn_js(f));
         } catch (e) {
-            $("<div class='alert-message block-message error'>" + e.stack + "</div>")
-                .appendTo($("#stdout"));
+            SHEN.error.add(e);
             return e;
         }
     };
