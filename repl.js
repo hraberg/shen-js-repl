@@ -6,21 +6,29 @@ $(function() {
         $("label[for=stdin]").text("(" + pos + " -)");
     }
 
-    SHEN_write = function(c) { return $("#stdout").text($("#stdout").text() + c) }
+    SHEN_write = function(c) { return $("#stdout").html($("#stdout").html() + c) }
     SHEN_readline = function() { return SHEN_history[SHEN_history.length - 1]; }
+    SHEN_load = function(f) {};
 
     SHEN_eval = function (code) {
         SHEN_history.push(code);
         SHEN_set_history_pos(SHEN_history.length);
         SHEN_fn(shen_read_evaluate_print);
-        SHEN_write('\n');
+        SHEN_write('<p>');
     }
-    SHEN_fn = function (f) { return shen_tail_call(shen_get_fn_js(f)); }
+    SHEN_fn = function (f) {
+        try {
+            return shen_tail_call(shen_get_fn_js(f));
+        } catch (e) {
+            SHEN_write("<div class='alert-message block-message error'>" + e.stack + "</div>");
+            return e;
+        }
+    }
 
     var arrow = {left: 37, up: 38, right: 39, down: 40 };
 
     SHEN_fn(shen_credits);
-    SHEN_write('\n');
+    SHEN_write('<p>');
     SHEN_set_history_pos(0);
 
     $("#stdin").keyup(function(e) {
