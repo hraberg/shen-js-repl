@@ -7,7 +7,18 @@
 }
 
 .code {
-    font-weight: bold;    
+    font-weight: bold;
+    cursor: default;
+    border-color: transparent;
+    border-width: 1px;
+    border-style: solid;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+.code:hover {
+    background-color: #ddf4fb;
+    border-color: #c6edf9;
 }
 
 #repl label {
