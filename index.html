@@ -1,0 +1,84 @@
+<html>
+<head>
+<link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.css"/>
+<style type="text/css">
+  #repl {
+  font-family: Monaco, Andale Mono, Courier New, monospace;
+  }
+  #repl label {
+  font-weight: bold;
+  }
+</style>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js">
+</script>
+<script type="text/javascript">
+SHEN_history = [];
+SHEN_history_pos = 0;
+SHEN_set_history_pos = function(pos) {
+SHEN_history_pos = pos;
+$("label[for=stdin]").text("(" + pos + " -)");
+}
+write = function(c) { return $("#stdout").text($("#stdout").text() + c) }
+readline = function() { return SHEN_history[SHEN_history.length - 1]; }
+
+SHEN_EVAL = function (code) {
+SHEN_history.push(code);
+SHEN_set_history_pos(SHEN_history.length);
+SHEN_fn(shen_read_evaluate_print);
+write('\n');
+}
+SHEN_fn = function (f) { return shen_tail_call(shen_get_fn_js(f)); }
+</script>
+<script type="text/javascript" src="shen.js">
+</script>
+<script type="text/javascript" >
+  var arrow = {left: 37, up: 38, right: 39, down: 40 };
+  $(function() {
+  SHEN_fn(shen_credits);
+  write('\n');
+  SHEN_set_history_pos(0);
+
+  $("#stdin").keyup(function(e) {
+  if (e.ctrlKey) {
+  if (e.keyCode == 13 && $.trim(this.value).length > 0) {
+  var line = this.value;
+  this.value = "";
+  SHEN_eval(line);
+  }
+  if (e.keyCode == arrow.up && SHEN_history_pos > 0) {
+  SHEN_set_history_pos(SHEN_history_pos - 1);
+  $("#stdin").val(SHEN_history[SHEN_history_pos]);
+  }
+  if (e.keyCode == arrow.down && SHEN_history_pos < SHEN_history.length) {
+  SHEN_set_history_pos(SHEN_history_pos + 1);
+  $("#stdin").val(SHEN_history[SHEN_history_pos]);
+  }
+  }
+  });
+  });
+</script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="page-header">
+        <h1>Shen</h1>
+      </div>
+    </header>
+    <pre id="stdout"></pre>
+    <form id="repl">
+      <div class="row">
+        <div class="span1">
+          <label class="span1" for="stdin"></label>
+        </div>
+        <div class="span15">
+          <textarea class="xxlarge span15" id="stdin" name="stdin" rows="4"></textarea>
+          <span class="help-block">
+            Shen Javascript REPL. Ctrl+Enter to Eval. Ctrl+Up/Down for History.
+          </span>
+        </div>
+      </div>
+    </form>
+  </div>
+</body>
+</html>
