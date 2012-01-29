@@ -6,6 +6,8 @@
     <link rel="stylesheet" href="repl.css"/>
     <script type="text/javascript" src="jquery-1.7.1.min.js">
     </script>
+    <script type="text/javascript" src="bootstrap-twipsy.js">
+    </script>
     <script type="text/javascript">
       write = function(c) { return SHEN.io.write(c); };
       read = function(fn) { return SHEN.io.read(fn); };
@@ -28,10 +30,10 @@
         <pre id="stdout"></pre>
         <div class="row">
           <div class="span1">
-            <label id="prompt" for="stdin" class="span1" title="Click to go to end of history"></label>
+            <label id="prompt" for="stdin" title="Click to go to end of history" class="span1" ></label>
           </div>
           <div class="span15">
-            <textarea class="xxlarge span15 prettyprint" id="stdin" name="stdin" rows="4" spellcheck="false"></textarea>
+            <textarea id="stdin" name="stdin" class="xxlarge span15" rows="4" spellcheck="false"></textarea>
             <span class="help-block">
               Shen Javascript REPL. Ctrl+Enter to Eval. Ctrl+Up/Down for History.
             </span>

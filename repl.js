@@ -77,6 +77,8 @@ $(function () {
         };
     }());
 
+    var twipsy_opts = {placement: "left", offset: 16, delayIn: 1000};
+
     SHEN.error = (function () {
         return {
             hide_last: function () {
@@ -84,12 +86,13 @@ $(function () {
             },
 
             add: function (e) {
-                var error = $('<div title="Click to toggle Stacktrace" class="alert-message block-message error">')
+                var error = $('<div class="alert-message block-message error" title="Click to toggle stacktrace">')
                     .text(e.toString())
+                    .twipsy(twipsy_opts)
                     .click(function () {
                         $(this).find(".stack").toggle();
                     })
-                    .appendTo($("#stdout"));
+                    .appendTo("#stdout");
 
                 $("<p class='stack'>")
                     .text(e.stack.substring(e.stack.indexOf("\n") + 1))
@@ -101,7 +104,8 @@ $(function () {
     SHEN.eval = function (code) {
         SHEN.history.add(code);
         SHEN.error.hide_last();
-        $('<div class="code" title="Click to recall, Double click to reevaluate">' + code + '</div>')
+        $('<div class="code" title="Click to recall, Double click to evaluate">' + code + '</div>')
+            .twipsy(twipsy_opts)
             .appendTo("#stdout");
         SHEN.io.newline();
         SHEN.fn(shen_read_evaluate_print);
@@ -142,6 +146,7 @@ $(function () {
         SHEN.history.last();
     });
 
+    $("#repl #prompt").twipsy({placement: "left", delayIn: 1000});
 
     SHEN.io.newline();
     SHEN.fn(shen_credits);
