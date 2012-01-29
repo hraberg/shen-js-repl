@@ -7,10 +7,10 @@
     <script type="text/javascript" src="jquery-1.7.1.min.js">
     </script>
     <script type="text/javascript">
-      write = function(c) { return SHEN_write(c); };
-      read = function(fn) { return SHEN_read(fn); };
-      readline = function() { return SHEN_readline(); };
-      print = function(c) { return SHEN_write(c); };
+      write = function(c) { return SHEN.io.write(c); };
+      read = function(fn) { return SHEN.io.read(fn); };
+      readline = function() { return SHEN.io.readline(); };
+      print = function(c) { return SHEN.io.write(c); };
     </script>
     <script type="text/javascript" src="shen.js">
     </script>
