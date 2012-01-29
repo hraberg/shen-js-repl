@@ -1,43 +1,47 @@
+<!DOCTYPE html>
 <html>
-<head>
-<link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.css"/>
-<link rel="stylesheet" href="repl.css"/>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js">
-</script>
-<script type="text/javascript">
-  write = function(c) { return SHEN_write(c); };
-  read = function(fn) { return SHEN_read(fn); };
-  readline = function() { return SHEN_readline(); };
-</script>
-<script type="text/javascript" src="shen.js">
-</script>
-<script type="text/javascript"  src="repl.js">
-</script>
-</head>
-<body>
-  <div class="container">
-    <header>
-      <div class="page-header">
-        <h1><a href="http://www.shenlanguage.org/">Shen</a></h1>
-      </div>
-    </header>
-    <form id="repl">
-      <pre id="stdout"></pre>
-      <div class="row">
-        <div class="span1">
-          <label class="span1" for="stdin"></label>
+  <head>
+    <title>Shen JS REPL</title>
+    <link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.css"/>
+    <link rel="stylesheet" href="repl.css"/>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js">
+    </script>
+    <script type="text/javascript">
+      write = function(c) { return SHEN_write(c); };
+      read = function(fn) { return SHEN_read(fn); };
+      readline = function() { return SHEN_readline(); };
+    </script>
+    <script type="text/javascript" src="shen.js">
+    </script>
+    <script type="text/javascript"  src="repl.js">
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <div class="page-header">
+          <h1><a href="http://www.shenlanguage.org/">Shen</a></h1>
         </div>
-        <div class="span15">
-          <textarea class="xxlarge span15" id="stdin" name="stdin" rows="4"></textarea>
-          <span class="help-block">
-            Shen Javascript REPL. Ctrl+Enter to Eval. Ctrl+Up/Down for History.
-          </span>
+      </header>
+      <form id="repl">
+        <pre id="stdout"></pre>
+        <div class="row">
+          <div class="span1">
+            <label class="span1" for="stdin"></label>
+          </div>
+          <div class="span15">
+            <textarea class="xxlarge span15 prettyprint" id="stdin" name="stdin" rows="4" spellcheck="false"></textarea>
+            <span class="help-block">
+              Shen Javascript REPL. Ctrl+Enter to Eval. Ctrl+Up/Down for History.
+            </span>
+          </div>
         </div>
-      </div>
-    </form>
-    <footer>
-      Shen 2010, copyright (C) 2010 <a href="http://www.lambdassociates.org">Mark Tarver</a> | Javascript Port, copyright (C) 2012 Ramil Farkhshatov | <a href="http://shenlanguage.org/license.html">Shen Licence</a>
-    </footer>
-  </div>
-</body>
+      </form>
+      <footer>
+        Shen 2010, copyright (C) 2010 <a href="http://www.lambdassociates.org">Mark Tarver</a> |
+        Javascript Port, copyright (C) 2012 Ramil Farkhshatov |
+        <a href="http://shenlanguage.org/license.html">Shen Licence</a>
+      </footer>
+    </div>
+  </body>
 </html>

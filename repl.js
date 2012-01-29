@@ -3,7 +3,7 @@ $(function() {
     var SHEN_history_pos = 0;
     var SHEN_set_history_pos = function(pos) {
         SHEN_history_pos = pos;
-        $("label[for=stdin]").text("(" + pos + " -)");
+        $("label[for=stdin]").text("(" + pos + "-)");
     }
 
     SHEN_write = function(c) {

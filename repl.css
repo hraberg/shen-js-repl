@@ -1,7 +1,9 @@
-#repl {
+#repl textarea {
     font-family: Monaco, Andale Mono, Courier New, monospace;
+    font-weight: bold;
 }
 
 #repl label {
+    font-family: Monaco, Andale Mono, Courier New, monospace;
     font-weight: bold;
 }
