@@ -84,6 +84,10 @@ $(function() {
         SHEN_set_history_pos($("#stdout .code").index($(this)));
         SHEN_eval_stdin();
     });
+    $("#prompt").click(function(e) {
+        SHEN_set_history_pos(SHEN_history.length);
+    });
+
 
     SHEN_newline();
     SHEN_fn(shen_credits);
