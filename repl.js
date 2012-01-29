@@ -1,22 +1,44 @@
 $(function() {
-    SHEN_history = [];
-    SHEN_history_pos = 0;
-    SHEN_set_history_pos = function(pos) {
+    var SHEN_history = [];
+    var SHEN_history_pos = 0;
+    var SHEN_set_history_pos = function(pos) {
         SHEN_history_pos = pos;
         $("label[for=stdin]").text("(" + pos + " -)");
     }
 
-    SHEN_write = function(c) { return $("#stdout").html($("#stdout").html() + c) }
-    SHEN_readline = function() { return SHEN_history[SHEN_history.length - 1]; }
-    SHEN_load = function(f) {};
+    SHEN_write = function(c) {
+        return $("#stdout").append(c);
+    }
+    // For file:// to work in Chrome google-chrome --allow-file-access-from-files
+    SHEN_read = function(fn) {
+        var data;
+        $.ajax({
+            type: "GET",
+            url: fn,
+            async: false,
+            dataType:"text",
+            success: function(response) {
+                data = response;
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                if (errorThrown) error = errorThrown
+                else error = textStatus;
+                throw error;
+            }
+        });
+        return data;
+    };
+    SHEN_readline = function() {
+        return SHEN_history[SHEN_history.length - 1];
+    }
 
-    SHEN_eval = function (code) {
+    var SHEN_eval = function (code) {
         SHEN_history.push(code);
         SHEN_set_history_pos(SHEN_history.length);
         SHEN_fn(shen_read_evaluate_print);
         SHEN_write('<p>');
     }
-    SHEN_fn = function (f) {
+    var SHEN_fn = function (f) {
         try {
             return shen_tail_call(shen_get_fn_js(f));
         } catch (e) {
