@@ -74,6 +74,7 @@ $(function () {
         var history = [], pos = 0;
         try {
             history = JSON.parse(localStorage.getItem("history")) || history;
+            pos = history.length;
         } catch (e) {
             SHEN.error.add(e);
         }
@@ -83,6 +84,10 @@ $(function () {
                 pos = to;
                 $("label[for=stdin]").text("(" + pos + "-)");
                 $("#stdin").val(history[pos]);
+            },
+
+            go_from_end:  function (to) {
+                SHEN.history.go(history.length - to);
             },
 
             add: function (code) {
@@ -145,7 +150,7 @@ $(function () {
 
     $("#stdout").on("click", ".code", function (e) {
         $(this).twipsy("hide");
-        SHEN.history.go($("#stdout .code").index($(this)));
+        SHEN.history.go_from_end($("#stdout .code").length - $("#stdout .code").index($(this)));
         $("#stdin").focus();
     });
     $("#stdout").on("dblclick", ".code", function (e) {
