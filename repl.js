@@ -114,6 +114,10 @@ $(function () {
 
             current: function () {
                 return history[history.length - 1];
+            },
+
+            length: function () {
+                return history.length - 1;
             }
         };
     }());
@@ -121,9 +125,11 @@ $(function () {
     SHEN.eval = function (code) {
         SHEN.history.add(code);
         SHEN.error.hide_last();
-        $('<div class="code" title="Click to recall, Double click to evaluate">' + code + '</div>')
+        var c = $('<div class="span15 code" title="Click to recall, Double click to evaluate">' + code + '</div>')
             .twipsy(twipsy_opts)
             .appendTo("#stdout");
+        $("<span class='span1 muted'>(" + SHEN.history.length() + "-) </span>")
+            .prependTo(c);
         SHEN.io.newline();
         SHEN.fn(shen_read_evaluate_print);
         SHEN.io.flush();

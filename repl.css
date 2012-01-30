@@ -43,6 +43,7 @@
 }
 
 #prompt {
+    margin-left: 12px;
     font-family: Monaco, Andale Mono, Courier New, monospace;
     font-weight: bold;
 }
