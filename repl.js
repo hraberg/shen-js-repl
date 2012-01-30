@@ -84,7 +84,7 @@ $(function () {
             go:  function (to) {
                 pos = to;
                 $("label[for=stdin]").text("(" + pos + "-)");
-                $("#stdin").val(history[pos]);
+                $("#stdin").focus().val(history[pos]).change();
             },
 
             go_from_end:  function (to) {
@@ -126,11 +126,14 @@ $(function () {
     SHEN.eval = function (code) {
         SHEN.history.add(code);
         SHEN.error.hide_last();
-        var c = $('<br><div class="code" title="Click to recall, Double click to evaluate">' + code + '</div>')
+        var c = $('<br><pre class="code prettyprint lang-shen" title="Click to recall, Double click to evaluate">' + code + '</div>')
             .twipsy(twipsy_opts)
             .appendTo("#stdout");
-        $("<span class='span1 muted'>(" + SHEN.history.length() + "-) </span>")
+        $("<span class='span1 muted prompt'>(" + SHEN.history.length() + "-) </span>")
             .prependTo(c);
+
+        prettyPrint();
+
         SHEN.io.newline();
         SHEN.fn(shen_read_evaluate_print);
         SHEN.io.flush();
@@ -150,6 +153,12 @@ $(function () {
 
     var key = {end: 35, home: 36, left: 37, up: 38, right: 39, down: 40, enter: 13};
 
+    var resize_stdin = function () {
+        var min_rows = 4;
+        var rows = $("#stdin").val().split(/\r\n|\r|\n/).length + 1;
+        $("#stdin").attr('rows', rows > min_rows ? rows : min_rows);
+    };
+
     $("#stdin").keydown(function (e) {
         if (e.ctrlKey) {
             if (e.keyCode === key.enter) SHEN.eval_stdin();
@@ -158,22 +167,22 @@ $(function () {
             if (e.keyCode === key.end) SHEN.history.last();
             if (e.keyCode === key.down) SHEN.history.forward();
         }
-    });
+    }).keyup(resize_stdin).change(resize_stdin);
 
     $("#stdout").on("click", ".code", function (e) {
         $(this).twipsy("hide");
         SHEN.history.go_from_end($("#stdout .code").length - $("#stdout .code").index($(this)));
         $("#stdin").focus();
-    });
-    $("#stdout").on("dblclick", ".code", function (e) {
+    }).on("dblclick", ".code", function (e) {
         SHEN.eval_stdin();
-    });
-    $("#stdout").on("mousedown", ".code", function (e) {
+    }).on("mousedown", ".code", function (e) {
         return false;
     });
+
     $("#prompt").click(function (e) {
         SHEN.history.last();
-    });
+    }).twipsy({placement: "left", offset: 8, delayIn: 1500});
+
 
     $("#repl input[type=submit]").click(function () {
         SHEN.eval_stdin();
@@ -181,11 +190,9 @@ $(function () {
         return false;
     });
     $("#repl button[type=reset]").click(function () {
-        $("#stdin").val("");
-        $("#stdin").focus();
+        $("#stdin").focus().val("").change();
         return false;
     });
-    $("#repl #prompt").twipsy({placement: "left", offset: 8, delayIn: 1500});
 
     SHEN.io.newline();
     SHEN.fn(shen_credits);

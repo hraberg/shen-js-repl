@@ -25,8 +25,12 @@
     margin: 4px 0;
     padding: 2px 0;
 }
+
 .code:hover {
     border-color: #bfbfbf;
+}
+.prompt .lit {
+    color: #bfbfbf;
 }
 
 .line {
