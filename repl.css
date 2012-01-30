@@ -1,5 +1,6 @@
-.page-header h1 {
+.page-header h1 a {
     font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, FreeSerif, serif;
+    color: #00438a;
 }
 
 #repl textarea {
