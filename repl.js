@@ -50,7 +50,7 @@ $(function () {
     SHEN.error = (function () {
         return {
             hide_last: function () {
-                $("#stdout div:last .stack").hide();
+                $("#stdout div:last .stack").slideUp("fast");
             },
 
             add: function (e) {
@@ -59,7 +59,7 @@ $(function () {
                     .twipsy(twipsy_opts)
                     .click(function () {
                         $(this).twipsy("hide");
-                        $(this).find(".stack").toggle();
+                        $(this).find(".stack").slideToggle("fast");
                     })
                     .appendTo("#stdout");
 
