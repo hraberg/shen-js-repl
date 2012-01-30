@@ -133,16 +133,15 @@ $(function () {
         }
     };
     SHEN.eval_stdin = function () {
-        SHEN.eval($("#stdin").val().trim());
+        var stdin = $("#stdin").val().trim();
+        if (stdin.length > 0) SHEN.eval(stdin);
     };
 
     var arrow = {left: 37, up: 38, right: 39, down: 40 }, enter = 13;
 
-    $("#stdin").keyup(function (e) {
+    $("#stdin").keydown(function (e) {
         if (e.ctrlKey) {
-            if (e.keyCode === enter && $.trim(this.value).length > 0) {
-                SHEN.eval_stdin();
-            }
+            if (e.keyCode === enter) SHEN.eval_stdin();
             if (e.keyCode === arrow.up) SHEN.history.back();
             if (e.keyCode === arrow.down) SHEN.history.forward();
         }
@@ -163,6 +162,16 @@ $(function () {
         SHEN.history.last();
     });
 
+    $("#repl input[type=submit]").click(function () {
+        SHEN.eval_stdin();
+        $("#stdin").focus();
+        return false;
+    });
+    $("#repl button[type=reset]").click(function () {
+        $("#stdin").val("");
+        $("#stdin").focus();
+        return false;
+    });
     $("#repl #prompt").twipsy({placement: "left", delayIn: 1500});
 
     SHEN.io.newline();
