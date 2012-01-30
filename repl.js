@@ -139,6 +139,7 @@ $(function () {
     $("#stdout").on("click", ".code", function (e) {
         $(this).twipsy("hide");
         SHEN.history.go($("#stdout .code").index($(this)));
+        $("#stdin").focus();
     });
     $("#stdout").on("dblclick", ".code", function (e) {
         SHEN.eval_stdin();
