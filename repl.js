@@ -137,11 +137,14 @@ $(function () {
     });
 
     $("#stdout").on("click", ".code", function (e) {
+        $(this).twipsy("hide");
         SHEN.history.go($("#stdout .code").index($(this)));
     });
     $("#stdout").on("dblclick", ".code", function (e) {
-        SHEN.history.go($("#stdout .code").index($(this)));
         SHEN.eval_stdin();
+    });
+    $("#stdout").on("mousedown", ".code", function (e) {
+        return false;
     });
     $("#prompt").click(function (e) {
         SHEN.history.last();

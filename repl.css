@@ -5,9 +5,11 @@
 #repl textarea {
     font-family: Monaco, Andale Mono, Courier New, monospace;
     font-weight: bold;
+    color: #333;
 }
 
 #repl #stdout {
+  font-size: 13px;
 }
 
 .code {
@@ -23,8 +25,8 @@
     border-top: 1px solid #eee;
 }
 .code:hover {
-    background-color: #ddf4fb;
-    border-color: #c6edf9;
+    background-color: #fee9cc;
+    border-color: #ccc;
 }
 
 .line {
