@@ -104,6 +104,10 @@ $(function () {
                 if (pos > 0) this.go(pos - 1);
             },
 
+            first: function () {
+                this.go(0);
+            },
+
             last: function () {
                 this.go(history.length);
             },
@@ -137,13 +141,15 @@ $(function () {
         if (stdin.length > 0) SHEN.eval(stdin);
     };
 
-    var arrow = {left: 37, up: 38, right: 39, down: 40 }, enter = 13;
+    var key = {end: 35, home: 36, left: 37, up: 38, right: 39, down: 40, enter: 13};
 
     $("#stdin").keydown(function (e) {
         if (e.ctrlKey) {
-            if (e.keyCode === enter) SHEN.eval_stdin();
-            if (e.keyCode === arrow.up) SHEN.history.back();
-            if (e.keyCode === arrow.down) SHEN.history.forward();
+            if (e.keyCode === key.enter) SHEN.eval_stdin();
+            if (e.keyCode === key.home) SHEN.history.first();
+            if (e.keyCode === key.up) SHEN.history.back();
+            if (e.keyCode === key.end) SHEN.history.last();
+            if (e.keyCode === key.down) SHEN.history.forward();
         }
     });
 
