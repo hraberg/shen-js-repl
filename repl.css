@@ -22,11 +22,11 @@
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
-    border-top: 1px solid #eee;
     margin: 4px 0;
+    padding: 2px 0;
 }
 .code:hover {
-    border-color: #ccc;
+    border-color: #bfbfbf;
 }
 
 .line {
