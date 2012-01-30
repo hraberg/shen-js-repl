@@ -125,7 +125,7 @@ $(function () {
     SHEN.eval = function (code) {
         SHEN.history.add(code);
         SHEN.error.hide_last();
-        var c = $('<div class="span15 code" title="Click to recall, Double click to evaluate">' + code + '</div>')
+        var c = $('<div class="code" title="Click to recall, Double click to evaluate">' + code + '</div>')
             .twipsy(twipsy_opts)
             .appendTo("#stdout");
         $("<span class='span1 muted'>(" + SHEN.history.length() + "-) </span>")
