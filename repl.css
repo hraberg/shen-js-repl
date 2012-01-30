@@ -22,30 +22,36 @@
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
-    padding: 0px 3px;
     border-top: 1px solid #eee;
+    margin: 4px 0;
 }
 .code:hover {
-    background-color: #fee9cc;
     border-color: #ccc;
 }
 
 .line {
-    padding-left: 4px;
+    background-color: #fee9cc;
+    border-color: #ccc;
+    border-width: 1px;
+    border-style: solid;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    padding: 9px;
 }
 
 #repl .alert-message.error {
-    padding: 8.5px;
-    margin: 4px;
+    padding: 9px;
+    margin: 4px 0;
 }
 #repl .alert-message.error:hover {
     border-color: #b94a48;
 }
 
 #prompt {
-    margin-left: 12px;
     font-family: Monaco, Andale Mono, Courier New, monospace;
     font-weight: bold;
+    width: 56px;
 }
 #prompt:hover {
     color: #00438a;

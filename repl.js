@@ -54,6 +54,7 @@ $(function () {
             },
 
             add: function (e) {
+                $("#stdout div.line:last").detach();
                 var error = $('<div class="alert-message block-message error" title="Click to toggle stacktrace">')
                     .html('<span class="message">' + e.toString())
                     .twipsy(twipsy_opts)
@@ -128,7 +129,7 @@ $(function () {
         var c = $('<div class="code" title="Click to recall, Double click to evaluate">' + code + '</div>')
             .twipsy(twipsy_opts)
             .appendTo("#stdout");
-        $("<span class='span1 muted'>(" + SHEN.history.length() + "-) </span>")
+        $("<br><span class='span1 muted'>(" + SHEN.history.length() + "-) </span>")
             .prependTo(c);
         SHEN.io.newline();
         SHEN.fn(shen_read_evaluate_print);
@@ -188,6 +189,7 @@ $(function () {
 
     SHEN.io.newline();
     SHEN.fn(shen_credits);
+    SHEN.io.write('\n');
     SHEN.fn(shen_initialise$_environment);
     SHEN.history.last();
 });
