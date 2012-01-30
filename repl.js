@@ -44,8 +44,39 @@ $(function () {
         };
     }());
 
+
+    var twipsy_opts = {placement: "left", offset: 16, delayIn: 1500};
+
+    SHEN.error = (function () {
+        return {
+            hide_last: function () {
+                $("#stdout div:last .stack").hide();
+            },
+
+            add: function (e) {
+                var error = $('<div class="alert-message block-message error" title="Click to toggle stacktrace">')
+                    .html('<span class="message">' + e.toString())
+                    .twipsy(twipsy_opts)
+                    .click(function () {
+                        $(this).twipsy("hide");
+                        $(this).find(".stack").toggle();
+                    })
+                    .appendTo("#stdout");
+
+                $('<p class="stack">')
+                    .text(e.stack.substring(e.stack.indexOf("\n") + 1))
+                    .appendTo(error);
+            }
+        };
+    }());
+
     SHEN.history = (function () {
         var history = [], pos = 0;
+        try {
+            history = JSON.parse(localStorage.getItem("history")) || history;
+        } catch (e) {
+            SHEN.error.add(e);
+        }
 
         return {
             go:  function (to) {
@@ -56,6 +87,7 @@ $(function () {
 
             add: function (code) {
                 history.push(code);
+                localStorage.setItem("history", JSON.stringify(history))
                 this.go(history.length);
             },
 
@@ -73,31 +105,6 @@ $(function () {
 
             current: function () {
                 return history[history.length - 1];
-            }
-        };
-    }());
-
-    var twipsy_opts = {placement: "left", offset: 16, delayIn: 1500};
-
-    SHEN.error = (function () {
-        return {
-            hide_last: function () {
-                $("#stdout div:last .stack").hide();
-            },
-
-            add: function (e) {
-                var error = $('<div class="alert-message block-message error" title="Click to toggle stacktrace">')
-                    .html('<span class="message">' + e.toString())
-                    .twipsy(twipsy_opts)
-                    .click(function () {
-                        $(this).find(".stack").toggle();
-                        $(this).twipsy("hide");
-                    })
-                    .appendTo("#stdout");
-
-                $('<p class="stack">')
-                    .text(e.stack.substring(e.stack.indexOf("\n") + 1))
-                    .appendTo(error);
             }
         };
     }());
