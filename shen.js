@@ -339,7 +339,7 @@ function shen_str_js(x) {
     case "boolean": return "" + x
     case "function": 
 			if (x.name.length > 0)
-				return x.name
+				return str_shen_from_js_js(x.name)
 			return "#<function>"
     case "object":
       if (x == shen_fail_obj)
