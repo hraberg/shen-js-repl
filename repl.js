@@ -184,7 +184,7 @@ $(function () {
         $("#stdin").focus();
         return false;
     });
-    $("#repl #prompt").twipsy({placement: "left", delayIn: 1500});
+    $("#repl #prompt").twipsy({placement: "left", offset: 8, delayIn: 1500});
 
     SHEN.io.newline();
     SHEN.fn(shen_credits);
