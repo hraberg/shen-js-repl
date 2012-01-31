@@ -193,6 +193,7 @@ $(function () {
         $(this).twipsy("hide");
         SHEN.history.go_from_end($("#stdout .code").length - $("#stdout .code").index($(this)));
         $("#stdin").focus();
+        $("footer")[0].scrollIntoView(false);
     }).on("dblclick", ".code", function (e) {
         SHEN.eval_stdin();
     }).on("mousedown", ".code", function (e) {

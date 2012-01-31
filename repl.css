@@ -1,6 +1,5 @@
-.page-header h1 a {
-    font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, FreeSerif, serif;
-    color: #00438a;
+#repl {
+    padding-top: 64px;
 }
 
 #repl textarea {
@@ -11,6 +10,22 @@
 
 #repl #stdout {
   font-size: 13px;
+}
+
+.topbar-inner, .topbar .fill {
+    font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, FreeSerif, serif;
+    color: #00438a;
+    background-color: rgba(255, 255, 255, 0.9);
+    background-image: none;
+    border-bottom: 1px solid #777;
+}
+
+.topbar-inner h1 {
+    margin: 2px 0;
+}
+
+.topbar-inner h1 a {
+    color: #00438a;
 }
 
 .code {
