@@ -15,7 +15,7 @@
 .topbar-inner, .topbar .fill {
     font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, FreeSerif, serif;
     color: #00438a;
-    background-color: rgba(255, 255, 255, 0.9);
+    background-color: rgba(255, 255, 255, 0.8);
     background-image: none;
     border-bottom: 1px solid #777;
 }

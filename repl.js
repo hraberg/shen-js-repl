@@ -217,6 +217,14 @@ $(function () {
         return false;
     });
 
+    $(".close").click(function () {
+        $(this).parent(".alert-message").slideUp("fast");
+    });
+
+    if (SHEN.history.length() == 0) {
+        $("#learn-shen").show();
+    };
+
     SHEN.io.newline();
     SHEN.fn(shen_credits);
     SHEN.io.write('\n');
