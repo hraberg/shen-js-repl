@@ -36,18 +36,20 @@ $(function () {
                     }
                 });
 
-                var source = $('<div title="Click to toggle source view"><a class="label" href=#>' + fn + '</a></div>')
-                    .twipsy(twipsy_opts)
-                    .click(function () {
-                        $(this).twipsy("hide");
-                        $(this).find(".loaded-file").slideToggle("fast").toggleClass("active");
-                    })
-                    .insertBefore("#stdout div.line:last");
+                if (fn.match(/.shen$/)) {
+                    var source = $('<div title="Click to toggle source view"><a class="label" href=#>' + fn + '</a></div>')
+                        .twipsy(twipsy_opts)
+                        .click(function () {
+                            $(this).twipsy("hide");
+                            $(this).find(".loaded-file").slideToggle("fast").toggleClass("active");
+                        })
+                        .insertBefore("#stdout div.line:last");
 
-                $('<pre class="loaded-file prettyprint lang-shen">' + data + '</div>')
-                    .appendTo(source);
+                    $('<pre class="loaded-file prettyprint lang-shen">' + data + '</div>')
+                        .appendTo(source);
 
-                prettyPrint();
+                    prettyPrint();
+                }
 
                 return data;
             },
