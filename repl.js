@@ -44,7 +44,7 @@ $(function () {
                     })
                     .insertBefore("#stdout div.line:last");
 
-                $('<pre class="loaded-file prettyprint">' + data + '</div>')
+                $('<pre class="loaded-file prettyprint lang-shen">' + data + '</div>')
                     .appendTo(source);
 
                 prettyPrint();
