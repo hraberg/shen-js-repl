@@ -35,6 +35,20 @@ $(function () {
                         throw (errorThrown || textStatus);
                     }
                 });
+
+                var source = $('<div title="Click to toggle source view"><a class="label" href=#>' + fn + '</a></div>')
+                    .twipsy(twipsy_opts)
+                    .click(function () {
+                        $(this).twipsy("hide");
+                        $(this).find(".loaded-file").slideToggle("fast").toggleClass("active");
+                    })
+                    .insertBefore("#stdout div.line:last");
+
+                $('<pre class="loaded-file prettyprint">' + data + '</div>')
+                    .appendTo(source);
+
+                prettyPrint();
+
                 return data;
             },
 
@@ -50,13 +64,14 @@ $(function () {
     SHEN.error = (function () {
         return {
             hide_last: function () {
-                $("#stdout div:last .stack").slideUp("fast");
+                $("#stdout .code:last +* .stack").slideUp("fast");
+                $("#stdout .code:last +* .loaded-file").slideUp("fast");
             },
 
             add: function (e) {
                 $("#stdout div.line:last").detach();
                 var error = $('<div class="alert-message block-message error" title="Click to toggle stacktrace">')
-                    .html('<span class="message">' + e.toString())
+                    .html('<a class="message" href="#">' + e.toString() + "</a>")
                     .twipsy(twipsy_opts)
                     .click(function () {
                         $(this).twipsy("hide");
@@ -83,8 +98,8 @@ $(function () {
         return {
             go:  function (to) {
                 pos = to;
-                $("label[for=stdin]").text("(" + pos + "-)");
-                $("#stdin").focus().val(history[pos]).change();
+                $("label[for=stdin]").text('(' + pos + '-)');
+                $("#stdin").val(history[pos]).change().focus();
             },
 
             go_from_end:  function (to) {
@@ -123,15 +138,18 @@ $(function () {
         };
     }());
 
+    SHEN.display_code = function (code) {
+    }
+
     SHEN.eval = function (code) {
         SHEN.history.add(code);
         SHEN.error.hide_last();
-        var c = $('<br><pre class="code prettyprint lang-shen" title="Click to recall, Double click to evaluate">' + code + '</div>')
+
+        var code = $('<br><pre class="code prettyprint lang-shen" title="Click to recall, Double click to evaluate">' + code + '</div>')
             .twipsy(twipsy_opts)
             .appendTo("#stdout");
-        $("<span class='span1 muted prompt'>(" + SHEN.history.length() + "-) </span>")
-            .prependTo(c);
-
+        $('<span class="span1 muted prompt">(' + SHEN.history.length() + '-) </span>')
+            .prependTo(code);
         prettyPrint();
 
         SHEN.io.newline();
@@ -149,6 +167,8 @@ $(function () {
     SHEN.eval_stdin = function () {
         var stdin = $("#stdin").val().trim();
         if (stdin.length > 0) SHEN.eval(stdin);
+        $("footer")[0].scrollIntoView(false);
+        $("#stdin").attr("placeholder", "");
     };
 
     var key = {end: 35, home: 36, left: 37, up: 38, right: 39, down: 40, enter: 13};
