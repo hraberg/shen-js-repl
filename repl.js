@@ -4,15 +4,15 @@ $(function () {
         var out_buffer = "";
 
         return {
-            newline: function () {
-                $('<div class="line">')
-                    .appendTo("#stdout");
-            },
-
             flush: function () {
-                $('<span>' + out_buffer  + '</span>')
-                    .appendTo("#stdout .line:last");
-                out_buffer = "";
+                if (out_buffer.length > 0) {
+                    if (!$("#stdout :last-child").hasClass("out"))
+                        $('<div class="out">').appendTo("#stdout");
+
+                    $('<span class="line">' + out_buffer  + '</span>')
+                        .appendTo("#stdout .out:last");
+                    out_buffer = "";
+                }
             },
 
             write: function (c) {
@@ -43,7 +43,7 @@ $(function () {
                             $(this).twipsy("hide");
                             $(this).find(".loaded-file").slideToggle("fast").toggleClass("active");
                         })
-                        .insertBefore("#stdout div.line:last");
+                        .insertAfter("#stdout .code:last");
 
                     $('<pre class="loaded-file prettyprint lang-shen">' + data + '</div>')
                         .appendTo(source);
@@ -71,7 +71,7 @@ $(function () {
             },
 
             add: function (e) {
-                $("#stdout div.line:last").detach();
+                SHEN.io.flush();
                 var error = $('<div class="alert-message block-message error" title="Click to toggle stacktrace">')
                     .html('<a class="message" href="#">' + e.toString() + "</a>")
                     .twipsy(twipsy_opts)
@@ -154,7 +154,6 @@ $(function () {
             .prependTo(code);
         prettyPrint();
 
-        SHEN.io.newline();
         SHEN.fn(shen_read_evaluate_print);
         SHEN.io.flush();
     };
@@ -225,7 +224,6 @@ $(function () {
         $("#learn-shen").show();
     };
 
-    SHEN.io.newline();
     SHEN.fn(shen_credits);
     SHEN.io.write('\n');
     SHEN.fn(shen_initialise$_environment);
