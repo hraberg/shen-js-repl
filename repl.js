@@ -110,7 +110,7 @@ $(function () {
 
             add: function (code) {
                 history.push(code);
-                localStorage.setItem("history", JSON.stringify(history))
+                localStorage.setItem("history", JSON.stringify(history));
                 this.go(history.length);
             },
 
@@ -140,9 +140,6 @@ $(function () {
         };
     }());
 
-    SHEN.display_code = function (code) {
-    }
-
     SHEN.eval = function (code) {
         SHEN.history.add(code);
         SHEN.error.hide_last();
@@ -169,7 +166,7 @@ $(function () {
         var stdin = $("#stdin").val().trim();
         if (stdin.length > 0) SHEN.eval(stdin);
         $("footer")[0].scrollIntoView(false);
-        $("#stdin").attr("placeholder", "");
+        $("#stdin").attr("placeholder", "").focus();
     };
 
     var key = {end: 35, home: 36, left: 37, up: 38, right: 39, down: 40, enter: 13};
@@ -207,15 +204,14 @@ $(function () {
         SHEN.history.last();
     }).twipsy({placement: "left", offset: 8, delayIn: 1500});
 
-
-    $("#repl input[type=submit]").click(function () {
+    $("#repl").submit(function (e) {
         SHEN.eval_stdin();
-        $("#stdin").focus();
+        e.preventDefault();
         return false;
     });
+
     $("#repl button[type=reset]").click(function () {
-        $("#stdin").focus().val("").change();
-        return false;
+        $("#stdin").focus();
     });
 
     $(".close").click(function () {
@@ -225,6 +221,8 @@ $(function () {
     if (SHEN.history.length() == 0) {
         $("#learn-shen").show();
     };
+
+    shen_globals[str_js_from_shen_js("*implementation*")] = "browser";
 
     SHEN.fn(shen_credits);
     SHEN.io.write('\n');
