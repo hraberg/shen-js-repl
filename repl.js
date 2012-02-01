@@ -182,11 +182,13 @@ $(function () {
 
     $("#stdin").keydown(function (e) {
         if (e.ctrlKey) {
-            if (e.keyCode === key.enter) SHEN.eval_stdin();
-            if (e.keyCode === key.home) SHEN.history.first();
-            if (e.keyCode === key.up) SHEN.history.back();
-            if (e.keyCode === key.end) SHEN.history.last();
-            if (e.keyCode === key.down) SHEN.history.forward();
+            switch (e.keyCode) {
+            case key.enter: return SHEN.eval_stdin();
+            case key.home: return SHEN.history.first();
+            case key.up: return SHEN.history.back();
+            case key.end: return SHEN.history.last();
+            case key.down: return SHEN.history.forward();
+            }
         }
     }).keyup(resize_stdin).change(resize_stdin);
 
