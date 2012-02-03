@@ -37,13 +37,14 @@ $(function () {
                 });
 
                 if (fn.match(/.shen$/)) {
-                    var source = $('<div title="Click to toggle source view"><a class="label" href=#>' + fn + '</a></div>')
+                    var source = $('<div title="Click to toggle source view"><a class="label" href="#">' + fn + '</a></div>')
                         .twipsy(twipsy_opts)
-                        .click(function () {
+                        .click(function (e) {
                             $(this).twipsy("hide");
                             $(this).find(".loaded-file").slideToggle("fast").toggleClass("active");
+                            e.preventDefault();
                         })
-                        .insertAfter("#stdout .code:last");
+                        .appendTo("#stdout");
 
                     $('<pre class="loaded-file prettyprint lang-shen">' + data + '</div>')
                         .appendTo(source);
@@ -75,9 +76,10 @@ $(function () {
                 var error = $('<div class="alert-message block-message error" title="Click to toggle stacktrace">')
                     .html('<a class="message" href="#">' + e.toString() + "</a>")
                     .twipsy(twipsy_opts)
-                    .click(function () {
+                    .click(function (e) {
                         $(this).twipsy("hide");
                         $(this).find(".stack").slideToggle("fast");
+                        e.preventDefault();
                     })
                     .appendTo("#stdout");
 
