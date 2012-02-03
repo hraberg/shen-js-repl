@@ -221,12 +221,23 @@ $(function () {
     });
 
     $(".close").click(function () {
-        $(this).parent(".alert-message").slideUp("fast");
+        var id = $(this).parent(".alert-message").slideUp("fast").attr("id");
+        localStorage.setItem("#" + id, "closed");
     });
 
-    if (SHEN.history.length() == 0) {
-        $("#learn-shen").show();
-    };
+    if (SHEN.history.length() > 0) {
+        ["#learn-shen", "#run-tests"].forEach(function (e) {
+            if (!localStorage.getItem(e)) $(e).show();
+        });
+    }
+
+    $("#run-tests-action").click(function () {
+        SHEN.eval('(cd "tests")');
+        SHEN.eval('(load "README.shen")');
+        setTimeout(function () {
+           SHEN.eval('(load "tests.shen")');
+        }, 100);
+    });
 
     shen_globals[str_js_from_shen_js("*implementation*")] = "browser";
 
