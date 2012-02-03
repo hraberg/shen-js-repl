@@ -48,7 +48,7 @@ $(function () {
                     $('<pre class="loaded-file prettyprint lang-shen">' + data + '</div>')
                         .appendTo(source);
 
-                    prettyPrint();
+                    SHEN.prettyprint();
                 }
 
                 return data;
@@ -66,8 +66,8 @@ $(function () {
     SHEN.error = (function () {
         return {
             hide_last: function () {
-                $("#stdout .code:last +* .stack").slideUp("fast");
-                $("#stdout .code:last +* .loaded-file").slideUp("fast");
+                $(".code:last").nextAll()
+                    .find(".stack, .loaded-file").slideUp("fast");
             },
 
             add: function (e) {
@@ -140,6 +140,11 @@ $(function () {
         };
     }());
 
+    SHEN.prettyprint = function () {
+        prettyPrint();
+        $(".prettyprint").removeClass("prettyprint");
+    };
+
     SHEN.eval = function (code) {
         SHEN.history.add(code);
         SHEN.error.hide_last();
@@ -149,10 +154,11 @@ $(function () {
             .appendTo("#stdout");
         $('<span class="span1 muted prompt">(' + SHEN.history.length() + '-) </span>')
             .prependTo(code);
-        prettyPrint();
+        SHEN.prettyprint();
 
-        SHEN.fn(shen_read_evaluate_print);
+        var result = SHEN.fn(shen_read_evaluate_print);
         SHEN.io.flush();
+        return result;
     };
     SHEN.fn = function (f) {
         try {
